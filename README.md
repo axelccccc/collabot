@@ -34,5 +34,5 @@ https://open.spotify.com/playlist/PLAYLIST_ID
 Tools
 =====
 
-`run-bot.sh` is a script I feed to `chrontab` to run the bot periodically.
+`run-bot.sh` is a script I feed to `crontab` to run the bot periodically.
 `select_artists.py` allows to keep or remove artists one by one in an artist list quickly with left and right arrow keys.
