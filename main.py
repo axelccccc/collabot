@@ -212,59 +212,6 @@ def generate_random_collab(artists: list):
 
 
 
-########## FORMATTING ##########
-
-
-
-def remove_feat(title: str):
-    """If existing, removes the part listing the featurings from a song title"""
-    title = title.strip(u'\u200e')
-    # pattern = re.compile(r'(?i).*(?=\(f(?:ea)?t)')
-    splitted = re.split(r'(?i)[ ([]?f(?:ea)?t(?:\.)?', title)
-    return splitted[0]
-
-def format_titles(titles):
-    """ Removes feats, titles pertaining to live versions, remixes, remasters...
-        :param: titles : list of song titles by artist :
-                    {
-                        'artist': ['song1', 'song2', ...],
-                        'artist2': ['song1', 'song2', ...]
-                    }
-    """
-    keywords = ['Live', 'Remastered', 'Version', 'Remix', 'Bonus', 'Instrumental', 'Mix']
-    for artist, songs in titles.items():
-        for i in range(0, len(songs)):
-            songs[i] = remove_feat(songs[i])
-        for k in keywords:
-            pattern = '.*'+k+'.*'
-            r = re.compile(pattern,flags=re.I)
-            songs = [s for s in songs if s not in list(filter(r.match,songs))]
-            # songs = list(filter(r.match,songs))
-        titles[artist] = songs
-    return titles
-
-
-
-def format_prompt_msg(collab):
-    """ Format the message that is sent to OpenAI for completion
-        :param: collab : artists of the collab
-        :param: titles : discography of all those artists
-    """
-    titles = {}
-    for artist in collab:
-        titles[artist['name']] = get_discography_songtitles(artist)
-    titles = format_titles(titles)
-    msg = []
-    for artist, songs in titles.items():
-        msg.append('Artist: ' + artist + '\nSong titles: ' + ', '.join(songs))
-    #msg = '\n'.join(msg)
-    msg = ''
-    msg += ('\nA collaboration between ' + ', '.join(list(titles.keys())[:-1]) + ' and ' + list(titles.keys())[-1] 
-            + ' would be called')
-    return msg
-
-
-
 ########## TEMP ##########
 
 
